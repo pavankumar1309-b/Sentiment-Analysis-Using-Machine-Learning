@@ -1,0 +1,50 @@
+from zipfile import ZipFile
+
+# Structure for Sentiment Analysis project
+sentiment_structure = {
+    "sentiment-analysis-ml/": [
+        "README.md",
+        "requirements.txt",
+        ".gitignore",
+        "LICENSE"
+    ],
+    "sentiment-analysis-ml/data/": [],
+    "sentiment-analysis-ml/notebooks/": [
+        "01_EDA.ipynb",
+        "02_Model_Training.ipynb",
+        "03_Testing.ipynb"
+    ],
+    "sentiment-analysis-ml/models/": [],
+    "sentiment-analysis-ml/src/": [
+        "preprocess.py",
+        "train.py",
+        "predict.py"
+    ],
+    "sentiment-analysis-ml/app/": [
+        "streamlit_app.py"
+    ]
+}
+
+# Create ZIP archive with placeholder files
+zip_filename = "sentiment-analysis-ml.zip"
+with ZipFile(zip_filename, 'w') as zipf:
+    for folder, files in sentiment_structure.items():
+        for file in files:
+            path = folder + file
+            content = f"# {file.replace('.py', '').replace('.ipynb', '').replace('_', ' ').title()}\n"
+            if file.endswith(".py"):
+                content += "\n# Placeholder script."
+            elif file.endswith(".ipynb"):
+                content = "{\n \"cells\": [],\n \"metadata\": {},\n \"nbformat\": 4,\n \"nbformat_minor\": 2\n}"
+            elif file == "README.md":
+                content = "# Sentiment Analysis Using Machine Learning\n\nStarter project structure."
+            elif file == "requirements.txt":
+                content = "pandas\nnumpy\nscikit-learn\nnltk\nstreamlit\njoblib"
+            elif file == ".gitignore":
+                content = "__pycache__/\n*.pkl\n*.ipynb_checkpoints/"
+            elif file == "LICENSE":
+                content = "MIT License\n\nPermission is hereby granted, free of charge, to any person obtaining a copy..."
+
+            zipf.writestr(path, content)
+
+print(f"Project zip created: {zip_filename}")
